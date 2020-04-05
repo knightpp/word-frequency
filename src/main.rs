@@ -32,10 +32,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .find_iter(&line)
                     .map(|m| m.as_str())
                     .for_each(|word| {
-                        let counter = dict.entry(word.to_string()).or_insert(0);
-                        *counter += 1;
+                        if dict.contains_key(word){
+                            *dict.get_mut(word).unwrap() += 1;
+                        }else{
+                            dict.insert(word.to_string(), 1);
+                        }
                     });
-
                 //println!("Thread {} -- got work", _i);
             }
             sr.send(dict).unwrap();
